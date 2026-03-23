@@ -1,0 +1,27 @@
+import type { EnergyAssumptions } from "@/store/types"
+
+export const defaultEnergy: EnergyAssumptions = {
+  gridCarbonIntensityGPerKwh: 400,
+  renewableTargetPercent: 50,
+  peakDemandMw: 100,
+  batteryCostPerUnitUsd: 60_000,
+  batteryCycleLife: 3_000,
+  batteryCapacityKwh: 171,
+  chargeTimeMinutes: 40,
+  swapTimeMinutes: 7,
+  chargingWindowStartHour: 21,
+  chargingWindowEndHour: 4,
+  kwhConsumptionPerKm: 1.35,
+  gridElectricityTariffUsdPerKwh: 0.11,
+  batteryPoolRatio: 3.6,
+  targetMarginPerCycleUsd: 15,
+  sinkingFundContributionPerCycleUsd: 8,
+  sinkingFundGrowthBufferPercent: 20,
+  batteryResidualValueUsd: 0,
+  insurancePerBatteryPerYearUsd: 500,
+  monitoringPerBatteryPerYearUsd: 300,
+  taxRatePercent: 30,
+  debtSharePercent: 55,
+  costOfDebtPercent: 10,
+  targetEquityReturnPercent: 20,
+}
