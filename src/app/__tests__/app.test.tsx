@@ -8,6 +8,7 @@ import { EcisHydrationBoundary } from "@/app/EcisHydrationBoundary"
 import { AppProviders } from "@/app/providers"
 import { createAppMemoryRouter } from "@/app/router"
 import { ErrorBoundary } from "@/components/error-boundary/ErrorBoundary"
+import { getConfiguredPasscode } from "@/config/passcode"
 import { NAV_ITEMS } from "@/config/navigation"
 import { partializeEcisState } from "@/store/persistence/partialize"
 import { resetEcisStoreForTests, useEcisStore } from "@/store/ecisStore"
@@ -48,7 +49,7 @@ describe("A2 ECIS shell", () => {
   )
 
   it("renders shell navigation links", () => {
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
     renderApp()
     const nav = screen.getByTestId("shell-nav")
     expect(nav).toBeInTheDocument()
@@ -60,7 +61,7 @@ describe("A2 ECIS shell", () => {
   })
 
   it("renders the default dashboard page", () => {
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
     renderApp("/")
     const main = screen.getByTestId("shell-main")
     expect(
@@ -70,7 +71,7 @@ describe("A2 ECIS shell", () => {
 
   it("updates visible content when switching pages via navigation", async () => {
     const user = userEvent.setup()
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
     renderApp("/")
     const main = screen.getByTestId("shell-main")
     await user.click(
@@ -84,7 +85,7 @@ describe("A2 ECIS shell", () => {
 
   it("toggles the assumptions panel and persists workspace state", async () => {
     const user = userEvent.setup()
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
     renderApp("/")
     expect(screen.getByTestId("shell-assumptions-panel")).toBeInTheDocument()
     await user.keyboard("{Alt>}b{/Alt}")
@@ -100,7 +101,7 @@ describe("A2 ECIS shell", () => {
 
   it("keeps the sticky content header mounted while navigating", async () => {
     const user = userEvent.setup()
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
     renderApp("/")
     const header = screen.getByTestId("shell-content-header")
     expect(header).toBeInTheDocument()
@@ -111,7 +112,7 @@ describe("A2 ECIS shell", () => {
 
   it("toggles assumptions with Alt+B (keyboard)", async () => {
     const user = userEvent.setup()
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
     renderApp("/")
     expect(screen.getByTestId("shell-assumptions-panel")).toBeInTheDocument()
     await user.keyboard("{Alt>}b{/Alt}")
@@ -120,7 +121,7 @@ describe("A2 ECIS shell", () => {
 
   it("loads a named scenario from header chips", async () => {
     const user = userEvent.setup()
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
     renderApp("/")
     const id = useEcisStore.getState().saveNamedScenario("Chip scenario")
     const chip = await waitFor(() =>
@@ -131,7 +132,7 @@ describe("A2 ECIS shell", () => {
   })
 
   it("remains usable at laptop-class viewport widths", () => {
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
     Object.defineProperty(window, "innerWidth", {
       configurable: true,
       value: 1280,
@@ -147,9 +148,9 @@ describe("A2 ECIS shell", () => {
 
   it("unlocks the simulator and returns to the requested route", async () => {
     const user = userEvent.setup()
-    const sharedPasscode = useEcisStore.getState().system.sharedPasscode
+    const sharedPasscode = getConfiguredPasscode()
     renderApp("/fleet")
-    await user.type(screen.getByLabelText(/passcode/i), sharedPasscode)
+    await user.type(screen.getByLabelText(/^Passcode$/i), sharedPasscode)
     await user.click(screen.getByRole("button", { name: /unlock simulator/i }))
     expect(
       await screen.findByRole("heading", { level: 1, name: /fleet/i }),

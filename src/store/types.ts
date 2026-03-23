@@ -43,7 +43,6 @@ export type SystemAssumptions = {
   cashSweepTriggerDscr: number
   contingencyPercentCapex: number
   developmentCostPercentCapex: number
-  sharedPasscode: string
   notes: string
 }
 

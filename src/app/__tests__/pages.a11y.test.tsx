@@ -8,6 +8,7 @@ import { EcisHydrationBoundary } from "@/app/EcisHydrationBoundary"
 import { AppProviders } from "@/app/providers"
 import { createAppMemoryRouter } from "@/app/router"
 import { ErrorBoundary } from "@/components/error-boundary/ErrorBoundary"
+import { getConfiguredPasscode } from "@/config/passcode"
 import { NAV_ITEMS } from "@/config/navigation"
 import { resetEcisStoreForTests, useEcisStore } from "@/store/ecisStore"
 
@@ -29,7 +30,7 @@ describe("accessibility smoke - major pages", () => {
     window.sessionStorage.clear()
     resetEcisStoreForTests()
     await useEcisStore.persist.rehydrate()
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
   })
 
   it.each(NAV_ITEMS)("$label route has landmarks and a page heading", async (item) => {

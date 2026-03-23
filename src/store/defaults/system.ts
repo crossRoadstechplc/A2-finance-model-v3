@@ -15,6 +15,5 @@ export const defaultSystem: SystemAssumptions = {
   cashSweepTriggerDscr: 1.5,
   contingencyPercentCapex: 5,
   developmentCostPercentCapex: 3,
-  sharedPasscode: "A2",
   notes: "",
 }

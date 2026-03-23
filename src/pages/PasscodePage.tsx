@@ -1,3 +1,4 @@
+import { Eye, EyeOff } from "lucide-react"
 import { useEffect, useMemo, useState, type FormEvent } from "react"
 import { Navigate, useLocation, useNavigate } from "react-router-dom"
 
@@ -5,7 +6,7 @@ import { isPasscodeUnlocked, rememberPasscodeAccess } from "@/auth/passcode"
 import { BrandMark } from "@/components/brand/BrandMark"
 import { Button } from "@/components/ui/button"
 import { BRANDING } from "@/config/branding"
-import { useAppStore } from "@/store/useAppStore"
+import { getConfiguredPasscode } from "@/config/passcode"
 
 function resolveRedirectTarget(from: unknown) {
   if (typeof from !== "string" || from.trim() === "") return "/"
@@ -16,9 +17,10 @@ function resolveRedirectTarget(from: unknown) {
 export function PasscodePage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const sharedPasscode = useAppStore((s) => s.system.sharedPasscode)
+  const sharedPasscode = getConfiguredPasscode()
   const [value, setValue] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [showPasscode, setShowPasscode] = useState(false)
 
   const redirectTo = useMemo(
     () => resolveRedirectTarget(location.state?.from),
@@ -66,18 +68,32 @@ export function PasscodePage() {
               >
                 Passcode
               </label>
-              <input
-                id="shared-passcode"
-                type="password"
-                autoComplete="current-password"
-                value={value}
-                onChange={(event) => {
-                  setValue(event.target.value)
-                  if (error) setError(null)
-                }}
-                className="h-11 w-full rounded-md border border-input bg-background px-3 font-mono text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring"
-                placeholder="Enter corridor passcode"
-              />
+              <div className="relative">
+                <input
+                  id="shared-passcode"
+                  type={showPasscode ? "text" : "password"}
+                  autoComplete="current-password"
+                  value={value}
+                  onChange={(event) => {
+                    setValue(event.target.value)
+                    if (error) setError(null)
+                  }}
+                  className="h-11 w-full rounded-md border border-input bg-background px-3 pr-12 font-mono text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-ring"
+                  placeholder="Enter corridor passcode"
+                />
+                <button
+                  type="button"
+                  aria-label={showPasscode ? "Hide passcode" : "Show passcode"}
+                  className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted-foreground transition hover:text-foreground"
+                  onClick={() => setShowPasscode((prev) => !prev)}
+                >
+                  {showPasscode ? (
+                    <EyeOff className="size-4" aria-hidden />
+                  ) : (
+                    <Eye className="size-4" aria-hidden />
+                  )}
+                </button>
+              </div>
             </div>
 
             {error ? (
@@ -91,7 +107,7 @@ export function PasscodePage() {
                 Unlock simulator
               </Button>
               <p className="text-xs text-muted-foreground">
-                Current configured value in this build: A2
+                Current configured value in this build: {sharedPasscode}
               </p>
             </div>
           </form>

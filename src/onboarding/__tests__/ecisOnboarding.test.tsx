@@ -7,6 +7,7 @@ import { EcisHydrationBoundary } from "@/app/EcisHydrationBoundary"
 import { AppProviders } from "@/app/providers"
 import { createAppMemoryRouter } from "@/app/router"
 import { ErrorBoundary } from "@/components/error-boundary/ErrorBoundary"
+import { getConfiguredPasscode } from "@/config/passcode"
 import { ecisOnboarding } from "@/onboarding/ecisOnboarding"
 import { resetEcisStoreForTests, useEcisStore } from "@/store/ecisStore"
 
@@ -29,7 +30,7 @@ describe("ecisOnboarding", () => {
     window.sessionStorage.clear()
     resetEcisStoreForTests()
     await useEcisStore.persist.rehydrate()
-    rememberPasscodeAccess(useEcisStore.getState().system.sharedPasscode)
+    rememberPasscodeAccess(getConfiguredPasscode())
   })
 
   it("opens the assumptions panel via the imperative API on the Fleet page", async () => {

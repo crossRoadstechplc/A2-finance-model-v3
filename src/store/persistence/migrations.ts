@@ -24,6 +24,41 @@ type LegacyV0Shape = {
   scenarios?: { named?: PersistedEcisSlice["scenarios"]["named"] }
 }
 
+function normalizeSystem(
+  system: Partial<PersistedEcisSlice["system"]> | undefined,
+): PersistedEcisSlice["system"] {
+  return {
+    modelHorizonYears: system?.modelHorizonYears ?? defaultSystem.modelHorizonYears,
+    discountRatePercent: system?.discountRatePercent ?? defaultSystem.discountRatePercent,
+    inflationAssumptionPercent:
+      system?.inflationAssumptionPercent ?? defaultSystem.inflationAssumptionPercent,
+    terminalGrowthRatePercent:
+      system?.terminalGrowthRatePercent ?? defaultSystem.terminalGrowthRatePercent,
+    exitMultiple: system?.exitMultiple ?? defaultSystem.exitMultiple,
+    corridorWideDiscountRatePercent:
+      system?.corridorWideDiscountRatePercent ??
+      defaultSystem.corridorWideDiscountRatePercent,
+    dscrMinimum: system?.dscrMinimum ?? defaultSystem.dscrMinimum,
+    dscrLockupThreshold:
+      system?.dscrLockupThreshold ?? defaultSystem.dscrLockupThreshold,
+    dscrDistributionThreshold:
+      system?.dscrDistributionThreshold ?? defaultSystem.dscrDistributionThreshold,
+    debtServiceReserveMonths:
+      system?.debtServiceReserveMonths ?? defaultSystem.debtServiceReserveMonths,
+    maintenanceReservePercentCapex:
+      system?.maintenanceReservePercentCapex ??
+      defaultSystem.maintenanceReservePercentCapex,
+    cashSweepTriggerDscr:
+      system?.cashSweepTriggerDscr ?? defaultSystem.cashSweepTriggerDscr,
+    contingencyPercentCapex:
+      system?.contingencyPercentCapex ?? defaultSystem.contingencyPercentCapex,
+    developmentCostPercentCapex:
+      system?.developmentCostPercentCapex ??
+      defaultSystem.developmentCostPercentCapex,
+    notes: system?.notes ?? defaultSystem.notes,
+  }
+}
+
 /**
  * Maps older persisted blobs into the current PersistedEcisSlice.
  * `fromVersion` is the version stored on disk (before migration target).
@@ -54,7 +89,7 @@ function migrateFromV0(raw: unknown): PersistedEcisSlice {
     const a = legacy.assumptions
     return {
       settings: { ...defaultSettings, ...a.settings },
-      system: { ...defaultSystem, ...a.system },
+      system: normalizeSystem(a.system),
       platform: { ...defaultPlatform, ...a.platform },
       energy: { ...defaultEnergy, ...a.energy },
       fleet: {
@@ -97,7 +132,7 @@ function migrateFromV0(raw: unknown): PersistedEcisSlice {
 
   return {
     settings: { ...defaultSettings, ...legacy.settings },
-    system: { ...defaultSystem, ...legacy.system },
+    system: normalizeSystem(legacy.system),
     platform: { ...defaultPlatform, ...legacy.platform },
     energy: { ...defaultEnergy, ...legacy.energy },
     fleet: {

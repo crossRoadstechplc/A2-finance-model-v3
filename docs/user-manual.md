@@ -21,11 +21,11 @@ All calculations run client-side in the browser.
 
 - Open the app.
 - Enter the shared passcode on the passcode screen.
-- Default passcode in this build: `A2-CORRIDOR`
-- The current default is defined in [system.ts](/c:/Users/Victus/Documents/Mr%20Omar/A2%20Modeling/A2-model-v3/src/store/defaults/system.ts).
+- Default passcode in this build: `A2`
+- The passcode is read from `VITE_PASSCODE` in your env configuration.
 - Unlocking lasts for the current browser tab session.
 
-If you want to change the passcode, update the code default and rebuild or rerun
+If you want to change the passcode, update your env file and restart or redeploy
 the app.
 
 ## 3. Core Model Logic
