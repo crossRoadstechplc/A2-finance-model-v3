@@ -91,7 +91,7 @@ export function PasscodePage() {
                 Unlock simulator
               </Button>
               <p className="text-xs text-muted-foreground">
-                Current configured value in this build: A2-CORRIDOR
+                Current configured value in this build: A2
               </p>
             </div>
           </form>
