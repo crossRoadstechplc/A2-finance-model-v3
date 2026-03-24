@@ -61,6 +61,7 @@ describe("selectEntityPageViewModel (detail)", () => {
     expect(
       vm.cashFlowStatement.rows.find((r) => r.rowKey === "sink_cf")?.rowKind,
     ).toBe("memo")
+    expect(vm.kpis.map((kpi) => kpi.id)).toContain("swap_charge_infra_capex")
   })
 
   it("includes debt, capex, and sources & uses columns when model attaches", () => {

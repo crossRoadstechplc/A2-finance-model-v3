@@ -483,6 +483,28 @@ export function AssumptionsEditor({ layout }: { layout: "panel" | "page" }) {
               }
             />
             <NumberField
+              id="platform-socket-capex"
+              label="Capex per charging socket (USD)"
+              value={data.platform.chargingSocketCapexUsd}
+              min={0}
+              step="any"
+              onValueChange={(chargingSocketCapexUsd) =>
+                useEcisStore.getState().updatePlatform({ chargingSocketCapexUsd })
+              }
+              data-testid="assumption-platform-socket-capex"
+            />
+            <NumberField
+              id="platform-bay-capex"
+              label="Capex per swap bay (USD)"
+              value={data.platform.swapBayCapexUsd}
+              min={0}
+              step="any"
+              onValueChange={(swapBayCapexUsd) =>
+                useEcisStore.getState().updatePlatform({ swapBayCapexUsd })
+              }
+              data-testid="assumption-platform-bay-capex"
+            />
+            <NumberField
               id="platform-software-dev"
               label="Software development cost (USD)"
               value={data.platform.softwareDevelopmentCostUsd}

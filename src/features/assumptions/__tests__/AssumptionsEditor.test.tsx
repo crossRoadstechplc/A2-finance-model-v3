@@ -106,6 +106,21 @@ describe("AssumptionsEditor", () => {
     expect(useEcisStore.getState().platform.corridorName).toBe("North Sea")
   })
 
+  it("updates platform bay and socket capex fields", () => {
+    render(<AssumptionsEditor layout="page" />)
+    fireEvent.change(screen.getByTestId("assumption-platform-socket-capex"), {
+      target: { value: "12500" },
+    })
+    fireEvent.change(screen.getByTestId("assumption-platform-bay-capex"), {
+      target: { value: "85000" },
+    })
+    expect(useEcisStore.getState().platform.chargingSocketCapexUsd).toBeCloseTo(
+      12500,
+      5,
+    )
+    expect(useEcisStore.getState().platform.swapBayCapexUsd).toBeCloseTo(85000, 5)
+  })
+
   it("updates snapshot model from A2 energy field", async () => {
     render(<AssumptionsEditor layout="page" />)
     const field = screen.getByTestId("assumption-a2-energy-kwh")

@@ -139,8 +139,8 @@ describe("runModel", () => {
 
   it("keeps DCF / IRR / MOIC stable on a pinned fixture", () => {
     const { model } = fixture()
-    expect(model.returnMetrics.unleveredNpv).toMatchInlineSnapshot(`1837071321.9774165`)
-    expect(model.returnMetrics.equityNpv).toMatchInlineSnapshot(`2309975801.1075954`)
+    expect(model.returnMetrics.unleveredNpv).toMatchInlineSnapshot(`1837766441.3631248`)
+    expect(model.returnMetrics.equityNpv).toMatchInlineSnapshot(`2309530647.985381`)
     expect(model.returnMetrics.moicUnlevered).toMatchInlineSnapshot(`NaN`)
     expect(model.returnMetrics.moicEquity).toMatchInlineSnapshot(`NaN`)
     expect(model.returnMetrics.unleveredIrr).toMatchInlineSnapshot(`null`)

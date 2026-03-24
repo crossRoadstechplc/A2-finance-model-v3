@@ -14,13 +14,14 @@ function baseInput() {
 
 describe("selectScalingBand", () => {
   it("selects the corridor scaling bands by truck count", () => {
-    expect(selectScalingBand(0).id).toBe("1-75")
-    expect(selectScalingBand(10).id).toBe("1-75")
-    expect(selectScalingBand(75).id).toBe("1-75")
-    expect(selectScalingBand(76).id).toBe("76-150")
-    expect(selectScalingBand(150).id).toBe("76-150")
-    expect(selectScalingBand(151).id).toBe("151-225")
-    expect(selectScalingBand(5_500).id).toBe("5001-7500")
+    expect(selectScalingBand(0).id).toBe("1-70")
+    expect(selectScalingBand(10).id).toBe("1-70")
+    expect(selectScalingBand(70).id).toBe("1-70")
+    expect(selectScalingBand(71).id).toBe("71-140")
+    expect(selectScalingBand(140).id).toBe("71-140")
+    expect(selectScalingBand(1_435).id).toBe("1401-1435")
+    expect(selectScalingBand(1_436).id).toBe("1436-1470")
+    expect(selectScalingBand(5_500).id).toBe("5461-5530")
   })
 })
 

@@ -11,6 +11,9 @@ type Props = {
 const bandInputClass =
   "box-border w-full min-h-10 min-w-[3.25rem] rounded border border-input bg-background px-2 py-2 font-mono text-base tabular-nums touch-manipulation sm:min-h-8 sm:px-1 sm:py-1 sm:text-xs"
 
+const MAX_CHARGES_PER_SOCKET_PER_NIGHT = 10
+const MAX_SWAPS_PER_BAY_PER_DAY = 205
+
 function syncDerived(row: ScalingBandRow): ScalingBandRow {
   return {
     ...row,
@@ -31,7 +34,7 @@ export function ScalingBandsTable({ rows, onChange, compact }: Props) {
 
   return (
     <div className="ecis-touch-x overflow-x-auto rounded-md border border-border/80">
-      <table className="w-full min-w-[62rem] border-collapse text-left text-xs">
+      <table className="w-full min-w-[74rem] border-collapse text-left text-xs">
         <thead className="border-b border-border/80 bg-muted/40">
           <tr>
             <th className={cell}>Band</th>
@@ -42,6 +45,8 @@ export function ScalingBandsTable({ rows, onChange, compact }: Props) {
             <th className={cell}>Bays / station</th>
             <th className={cell}>Total sockets</th>
             <th className={cell}>Total bays</th>
+            <th className={cell}>Max nightly charges</th>
+            <th className={cell}>Max daily swaps</th>
             <th className={cell}>Battery pool</th>
             <th className={cell}>Capex anchor (USD)</th>
           </tr>
@@ -124,6 +129,12 @@ export function ScalingBandsTable({ rows, onChange, compact }: Props) {
               <td className={`${cell} font-mono text-muted-foreground`}>
                 {row.baseBays}
               </td>
+              <td className={`${cell} font-mono text-muted-foreground`}>
+                {row.baseSockets * MAX_CHARGES_PER_SOCKET_PER_NIGHT}
+              </td>
+              <td className={`${cell} font-mono text-muted-foreground`}>
+                {row.baseBays * MAX_SWAPS_PER_BAY_PER_DAY}
+              </td>
               <td className={cell}>
                 <input
                   type="number"
@@ -154,9 +165,9 @@ export function ScalingBandsTable({ rows, onChange, compact }: Props) {
       </table>
       {!compact ? (
         <p className="border-t border-border/60 px-2 py-2 text-xs text-muted-foreground">
-          This Phase 1 table now mirrors the corridor spec more closely: stations,
-          sockets per station, bays per station, and battery pool defaults can all be
-          edited independently per band.
+          Base-case throughput now shows derived nightly charging and daily swap
+          capacity for each band. Stations, sockets per station, bays per station,
+          battery pool, and capex anchor all remain editable per band.
         </p>
       ) : null}
     </div>

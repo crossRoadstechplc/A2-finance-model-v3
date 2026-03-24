@@ -505,6 +505,7 @@ function buildPrimaryChart(
         },
       ],
     }
+
   }
 
   if (entityId === "fleet") {
@@ -566,6 +567,12 @@ function buildKpis(
   warningsInScope: number,
 ): EntityKpiItem[] {
   const out: EntityKpiItem[] = []
+  const cumulativePlatformInfraCapexUsd = model
+    ? model.entities.platform.capexDeployment.reduce(
+        (sum, row) => sum + Math.max(0, row.platformUsd),
+        0,
+      )
+    : null
 
   if (entityId === "energy") {
     out.push({
@@ -584,6 +591,14 @@ function buildKpis(
         scenario.totalRetailUsdPerKwh !== null &&
         Number.isFinite(scenario.totalRetailUsdPerKwh)
           ? `${scenario.totalRetailUsdPerKwh.toFixed(4)} USD/kWh`
+          : "—",
+    })
+    out.push({
+      id: "swap_charge_infra_capex",
+      label: "Swap + charging infra est. (cum.)",
+      value:
+        cumulativePlatformInfraCapexUsd !== null
+          ? money(ctx, cumulativePlatformInfraCapexUsd)
           : "—",
     })
   }
@@ -732,3 +747,6 @@ export function composeEntityPageDetail(
     constraintItems,
   }
 }
+
+
+
